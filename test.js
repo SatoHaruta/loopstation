@@ -27,6 +27,7 @@ function draw() {
 
     //ここでキーを更新している
     for (let i = 0; i < keyConfig.length; i++) {
+        trackManager[i].draw();
         keyConfig[i].update();
     }
 }
