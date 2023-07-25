@@ -8,7 +8,7 @@ let mic;
 
 function setup() {
     createCanvas(100, 100);
-    background(255,0,0);
+    background(255, 0, 0);
     mic = new p5.AudioIn();
     //ボタンの数
     buttonCount = 4;
@@ -32,14 +32,14 @@ function draw() {
 //マイク起動し、レコーダーに接続する関数
 function micOn() {
     // オーディオ入力処理を開始
+    userStartAudio();
     mic.start();
     console.log("マイクon");
 }
 
 
 function mouseClicked() {
-    if (state == 0) {
-    }
+
     state++;
 }
 
@@ -55,6 +55,8 @@ function keyReleased() {
         getKey[i].getKeyReleased();
     }
 }
+
+
 
 
 
