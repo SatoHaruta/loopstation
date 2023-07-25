@@ -1,51 +1,64 @@
 class keySystem {
-    constructor(keyNum) {
+    constructor(inputKeyCharacter) {
+        this.keyCharacter = inputKeyCharacter;
         this.Nkey = false;//NowKeyの略、現在のキーのステータス
         this.Pkey = false;//PreKeyの略、1フレーム過去のステータス
-        this.keyTiming = 0;//キータイミング、0が初期状態、押された瞬間1、離した瞬間2になる
+        this.keyState;//キーの現在の状況
 
-        //ここで引数に応じて反応させるキーを変える
-        if (keyNum == 0) {
-            this.keyNum = 'a';
-        }
-        if (keyNum == 1) {
-            this.keyNum = 's';
-        }
-        if (keyNum == 2) {
-            this.keyNum = 'd';
-        }
-        if (keyNum == 3) {
-            this.keyNum = 'f';
-        }
     }
 
-    //キーが押された時の処理
-    getKeyPress() {
-        if (key == this.keyNum) {
+    update(){
+        this.Pkey = this.Nkey;//Pkeyにこのフレームでの値を設定
+    }
+
+    //キーが押された時の設定（keyPressedで呼び出している）
+    setKeyPress() {
+        if (key == this.keyCharacter) {
             this.Nkey = true;
             console.log(key);
         }
     }
 
-    //キーが離された時の処理
-    getKeyReleased() {
-        if (key == this.keyNum) {
+    //キーが離された時の設定（keyReleasedで呼び出している）
+    setKeyReleased() {
+        if (key == this.keyCharacter) {
             this.Nkey = false;
         }
     }
 
-    //キーを話したタイミングとキーを押したタイミングを取得する
-    //これはkeyTimingを取得する前にdrawで必ず呼び出すこと
-    getKeyTiming() {
-        this.keyTiming = 0;//毎回初期化
+    //外部からキーが押された瞬間を検知するメソッド
+    getKeyPress(){
+        if(this.Pkey == false &&this.Nkey == true){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    //外部からキーが離された瞬間を検知するメソッド
+    getKeyRelease(){
+        if(this.Pkey == true && this.Nkey == false){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    //ここではキーの状態を取得することができる
+    getKeyState() {
+        if (this.Nkey == true){//押され続けている時
+            this.keyState = "keyPress";
+        }
+        if (this.Nkey == true){//離し続けている時
+            this.keyState = "keyRelease";
+        }
         if (this.Pkey == false && this.Nkey == true) {
-            this.keyTiming = 1;//押し込んだタイミングで1に切り替わる
+            this.keyState = "keyDown";//押したタイミング
         }
         if (this.Pkey == true && this.Nkey == false) {
-            this.keyTiming = 2;//離したタイミングで2に切り替わる
+            this.keyState= "keyUp";//離したタイミング
         }
-
-        this.Pkey = this.Nkey;//Pkeyにこのフレームでの値を設定
     }
 }
