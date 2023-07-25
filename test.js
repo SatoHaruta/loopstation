@@ -21,11 +21,12 @@ function setup() {
 
 function draw() {
     background(0);
+    // keyToRecord();//クラスじゃないのでfor文の中に入れるな!
+
+    //ここでキーを更新している
     for (let i = 0; i < keyConfig.length; i++) {
-        keyConfig[i].getKeyState();//ここでキーを取得している
-        keyConfig[i].getKeyState();//ここでキーを更新している
+        keyConfig[i].update();
     }
-    keyToRecord();//クラスじゃないのでfor文の中に入れるな!
 }
 
 //マイク起動し、レコーダーに接続する関数
@@ -36,10 +37,6 @@ function micOn() {
     console.log("マイクon");
 }
 
-
-function mouseClicked() {
-    state++;
-}
 
 
 function keyPressed() {

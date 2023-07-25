@@ -15,7 +15,6 @@ class keySystem {
     setKeyPress() {
         if (key == this.keyCharacter) {
             this.Nkey = true;
-            console.log(key);
         }
     }
 
@@ -28,7 +27,8 @@ class keySystem {
 
     //外部からキーが押された瞬間を検知するメソッド
     getKeyPress(){
-        if(this.Pkey == false &&this.Nkey == true){
+        if(this.Pkey == false && this.Nkey == true){
+            console.log(this.keyCharacter + "が今おされた");
             return true;
         }
         else{
@@ -39,6 +39,7 @@ class keySystem {
     //外部からキーが離された瞬間を検知するメソッド
     getKeyRelease(){
         if(this.Pkey == true && this.Nkey == false){
+            console.log(this.keyCharacter +"が今離された");
             return true;
         }
         else{
@@ -48,10 +49,10 @@ class keySystem {
 
     //ここではキーの状態を取得することができる
     getKeyState() {
-        if (this.Nkey == true){//押され続けている時
+        if (this.Nkey == true && this.Pkey == true){//押され続けている時
             this.keyState = "keyPress";
         }
-        if (this.Nkey == true){//離し続けている時
+        if (this.Nkey == false && this.Pkey == false){//離し続けている時
             this.keyState = "keyRelease";
         }
         if (this.Pkey == false && this.Nkey == true) {
@@ -60,5 +61,6 @@ class keySystem {
         if (this.Pkey == true && this.Nkey == false) {
             this.keyState= "keyUp";//離したタイミング
         }
+        return this.keyState;
     }
 }
