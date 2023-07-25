@@ -7,6 +7,7 @@ class SoundManager{
         //音声格納用の変数にRecordAndPlayを設定する
         //[0]がセーブ用途のプレファイル。[1]が本ファイル。
         this.soundContainer = [new RecordAndPlay(mic), new RecordAndPlay(mic)];
+        console.log("作られた");
     }
 
     draw(){

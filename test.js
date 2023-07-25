@@ -1,8 +1,9 @@
 
-let keyConfig = ['a','s','d','f'];//キーの反応のクラス
+let keyConfig = ['a'];//キーの反応のクラス
 // 録音、停止、再生の状態を表す
 let state = 0;
 let mic;
+let trackManager = [];
 
 
 function setup() {
@@ -15,6 +16,7 @@ function setup() {
         //ここでボタンひとつにつき一つのkeySystemインスタンスを作る
         //ここではkeySystemに一つ目の配列に入っている文字を送る
         keyConfig[i] = new keySystem(keyConfig[i]);
+        trackManager[i] = new TrackManager(mic, i);
     }
 }
 
