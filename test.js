@@ -1,14 +1,14 @@
-
-let keyConfig = ['a'];//キーの反応のクラス
+//ここを増やすだけでボタンが増えます。
+let keyConfig = ['a','s','d','f'];//キーの反応のクラス
 // 録音、停止、再生の状態を表す
 let state = 0;
 let mic;
 let trackManager = [];
-
+let button = [];
 
 function setup() {
-    createCanvas(100, 100);
-    background(255, 0, 0);
+    createCanvas(windowWidth, windowHeight);
+    background(255);
     mic = new p5.AudioIn();
     // p5.AudioInオブジェクトを作成
     micOn();
@@ -17,18 +17,20 @@ function setup() {
         //ここではkeySystemに一つ目の配列に入っている文字を送る
         keyConfig[i] = new keySystem(keyConfig[i]);
         trackManager[i] = new TrackManager(mic, i);
+        button[i]= new ButtonDisplay(100*(i+1),windowHeight/2, 50, i);
     }
 }
 
 
 function draw() {
-    background(0);
+    background(255);
     // keyToRecord();//クラスじゃないのでfor文の中に入れるな!
 
     //ここでキーを更新している
     for (let i = 0; i < keyConfig.length; i++) {
         trackManager[i].draw();
         keyConfig[i].update();
+        button[i].display();
     }
 }
 

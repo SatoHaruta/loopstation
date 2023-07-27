@@ -54,6 +54,20 @@ class SoundManager {
         console.log("durationの設定完了");
     }
 
+    //メインの音源を再生する
+    soundMainPlay(){
+        //再生する
+        this.soundContainer[1].playRecord();
+        this.soundContainer[1].isPlaying = true;
+    }
+
+    //メインの音源を停止する
+    soundMainStop(){
+        //停止する
+        this.soundContainer[1].stopPlaying();
+        this.soundContainer[1].isPlaying = false;
+    }
+
     //始まった瞬間の時間を設定する
     setStartTime() {
         this.startTime = millis();
