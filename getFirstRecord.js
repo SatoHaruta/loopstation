@@ -9,14 +9,13 @@ function getFirstRecord() {
         for (let i = 0; i < trackManager.length; i++) {
             //trackの数分for分を回す
             for (let u = 0; u < trackManager[i].soundManager.length; u++) {
-                //soundManagerの中にある
-                if (trackManager[i].soundManager[u].soundContainer[1].isSet == true) {
+                
+                if (trackManager[i].soundManager[u].soundIsSet == true) {
                     //globalIsSetをtrueにする。
                     globalIsSet = true;
                 }
 
             }
         }
-        globalIsSet = true;
     }
 }

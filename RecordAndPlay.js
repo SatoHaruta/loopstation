@@ -5,6 +5,7 @@ class RecordAndPlay {
 
         this.isSet = false;//まだ録音していない状態
         this.isPlaying = false;//まだ再生していない状態
+        this.isRecording = false;//現在は録音していない状態
 
         this.mic = Mic;
         this.soundFileSetup();
@@ -24,6 +25,7 @@ class RecordAndPlay {
         // soundFileにレコードする
         this.recorder.record(this.soundFile);
         this.isPlaying = false;
+        this.isRecording = true;//録音中の状態にする
         console.log("録音開始")
     }
 
@@ -32,6 +34,7 @@ class RecordAndPlay {
         // レコーダーを停止し、結果をsoundFile保存する
         this.recorder.stop();
         this.isSet = true;
+        this.isRecording = false;//録音していない状態にする
         console.log("録音終了")
     }
 

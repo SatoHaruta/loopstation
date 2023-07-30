@@ -33,7 +33,7 @@ class TrackManager {
 
     trackStartRecord(i) {
         //このtrackに割り当てられているkeyConfigのキーが押された瞬間かつ、soundManagerの中にあるsoundContainerの本ファイルがまだ録音していない場合に
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundContainer[1].isSet == false) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsSet == false) {
 
             console.log("Track→Soundへ録音開始");
             this.soundManager[i].soundStartRecord();
@@ -42,7 +42,7 @@ class TrackManager {
 
     trackFinishRecord(i) {
         //このtrackに割り当てられているkeyConfigのキーが離された瞬間かつ、soundManagerの中にあるsoundContainerの本ファイルがもう録音済みの場合に
-        if (keyConfig[this.buttonNum].getKeyRelease() == true && this.soundManager[i].soundContainer[1].isSet == false) {
+        if (keyConfig[this.buttonNum].getKeyRelease() == true && this.soundManager[i].soundIsSet == false) {
             console.log("Track→Soundへ本ファイルの録音停止");
             this.soundManager[i].soundFinishMainRecord();
             this.soundManager[i].soundContainer[1].isRecording = false;
@@ -51,7 +51,7 @@ class TrackManager {
 
     //メイン音源の再生をする
     trackMainStartPlay(i) {
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundContainer[1].isPlaying == false && this.soundManager[i].soundContainer[1].isSet == true) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundContainer[1].isPlaying == false && this.soundManager[i].soundIsSet == true) {
             //再生する
             console.log("メイン音源の再生開始");
             this.soundManager[i].soundMainPlay();

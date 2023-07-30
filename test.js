@@ -1,5 +1,5 @@
 //ここを増やすだけでボタンが増えます。
-let keyConfig = ['a'];//キーの反応のクラス
+let keyConfig = ['a','s'];//キーの反応のクラス
 // 録音、停止、再生の状態を表す
 let state = 0;
 let mic;

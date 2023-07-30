@@ -4,7 +4,14 @@ class SoundManager {
     startTime;
     duration;
     preFinishRecordTime = 300;
-    
+    //トラックの中の一つの音声について、録音済みか否かを表す変数
+    //soundContainer[1]のmainのisSet=trueになった場合にtrueになる
+    soundManagerIsSet = false;
+    //今プレイ中なのかどうか
+    soundManagerIsPlaying = false;
+    //今録音中かどうか
+    soundManagerIsRecording = false;
+
 
     constructor(Mic) {
         //マイクの継承
@@ -17,13 +24,13 @@ class SoundManager {
 
     soundUpdate(){
         this.soundFinishPreRecord();
+        this.checkState();
     }
 
     //録音を開始する
     soundStartRecord() {
         for (let i = 0; i < this.soundContainer.length; i++) {
             this.soundContainer[i].startRecord();
-            this.soundContainer[i].isRecording = true;
         }
         //ここで録音開始した時間を取得
         this.setStartTime();
@@ -35,10 +42,6 @@ class SoundManager {
         if (millis() - this.startTime > this.preFinishRecordTime && this.soundContainer[0].isSet == false) {
             //プレの録音を停止する。
             this.soundContainer[0].finishRecord();
-            //録音済みであることにする
-            this.soundContainer[0].isSet = true;
-            //録音中で無いことにする
-            this.soundContainer[0].isRecording = false;
             console.log("プレファイルの録音停止")
         }
     }
@@ -46,10 +49,6 @@ class SoundManager {
     //メインの録音を終了する
     soundFinishMainRecord() {
         this.soundContainer[1].finishRecord();
-        //録音済みであることにする
-        this.soundContainer[1].isSet = true;
-        //録音中で無いことにする
-        this.soundContainer[1].isRecording = false;
         console.log("本ファイルの録音停止");
         this.setDuration();
         console.log("durationの設定完了");
@@ -59,14 +58,12 @@ class SoundManager {
     soundMainPlay(){
         //再生する
         this.soundContainer[1].playRecord();
-        this.soundContainer[1].isPlaying = true;
     }
 
     //メインの音源を停止する
     soundMainStop(){
         //停止する
         this.soundContainer[1].stopPlaying();
-        this.soundContainer[1].isPlaying = false;
     }
 
     //始まった瞬間の時間を設定する
@@ -78,5 +75,12 @@ class SoundManager {
     setDuration() {
         this.duration = millis() - this.startTime;//ここでdurationを定義する
         console.log(this.duration);
+    }
+
+    //soundContainerのmainの値をsoundManagerに引き継ぐ
+    checkState(){
+        this.soundIsPlaying = this.soundContainer[1].isPlaying;
+        this.soundIsRecording = this.soundContainer[1].isRecording;
+        this.soundIsSet = this.soundContainer[1].isSet;
     }
 }
