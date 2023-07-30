@@ -8,7 +8,7 @@ function getFirstRecord() {
         //trackManagerの回数分だけ行う
         for (let i = 0; i < trackManager.length; i++) {
             //trackの数分for分を回す
-            for (let u = 0; u < trackManager[i].soundManager.length; i++) {
+            for (let u = 0; u < trackManager[i].soundManager.length; u++) {
                 //soundManagerの中にある
                 if (trackManager[i].soundManager[u].soundContainer[1].isSet == true) {
                     //globalIsSetをtrueにする。

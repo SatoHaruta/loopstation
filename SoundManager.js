@@ -4,6 +4,7 @@ class SoundManager {
     startTime;
     duration;
     preFinishRecordTime = 300;
+    
 
     constructor(Mic) {
         //マイクの継承
