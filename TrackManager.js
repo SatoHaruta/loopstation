@@ -18,7 +18,7 @@ class TrackManager {
             this.trackStartRecord(i);
             this.trackFinishRecord(i);
 
-
+            
             
             //ここから下はisPlaying = true→falseになってしまって同じフレームに再生と停止をしてしまうので、else ifを無理やりねじ込んでいる。
             if (this.soundManager[i].soundContainer[1].isPlaying == true) {
@@ -51,7 +51,7 @@ class TrackManager {
 
     //メイン音源の再生をする
     trackMainStartPlay(i) {
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundContainer[1].isPlaying == false && this.soundManager[i].soundIsSet == true) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsPlaying == false && this.soundManager[i].soundIsSet == true) {
             //再生する
             console.log("メイン音源の再生開始");
             this.soundManager[i].soundMainPlay();
@@ -60,7 +60,7 @@ class TrackManager {
 
     //メイン音源を停止する
     trackMainStopPlay(i) {
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundContainer[1].isPlaying == true) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsPlaying == true) {
             //停止する
             console.log("メイン音源の再生停止");
             this.soundManager[i].soundMainStop();

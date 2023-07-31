@@ -11,6 +11,10 @@ class SoundManager {
     soundManagerIsPlaying = false;
     //今録音中かどうか
     soundManagerIsRecording = false;
+    //現在のsoundContainer内の状態
+    //defined,subAndMainRecording,MainRecording,recorded,playing,stopped,waiting
+    stateTypes = new Set();
+    soundManagerState;
 
 
     constructor(Mic) {
@@ -20,9 +24,21 @@ class SoundManager {
         //[0]がセーブ用途のプレファイル。[1]が本ファイル。
         this.soundContainer = [new RecordAndPlay(mic), new RecordAndPlay(mic)];
         console.log("作られた");
+        this.defineStateTypes();
     }
 
-    soundUpdate(){
+    //ここでsoundManagerの状態の種類を作っている
+    defineStateTypes(){
+        this.stateTypes.add("defined");
+        this.stateTypes.add("subAndMainRecording");
+        this.stateTypes.add("MainRecording");
+        this.stateTypes.add("recorded");
+        this.stateTypes.add("playing");
+        this.stateTypes.add("stopped");
+        this.stateTypes.add("waiting");
+    }
+
+    soundUpdate() {
         this.soundFinishPreRecord();
         this.checkState();
     }
@@ -55,13 +71,13 @@ class SoundManager {
     }
 
     //メインの音源を再生する
-    soundMainPlay(){
+    soundMainPlay() {
         //再生する
         this.soundContainer[1].playRecord();
     }
 
     //メインの音源を停止する
-    soundMainStop(){
+    soundMainStop() {
         //停止する
         this.soundContainer[1].stopPlaying();
     }
@@ -78,7 +94,7 @@ class SoundManager {
     }
 
     //soundContainerのmainの値をsoundManagerに引き継ぐ
-    checkState(){
+    checkState() {
         this.soundIsPlaying = this.soundContainer[1].isPlaying;
         this.soundIsRecording = this.soundContainer[1].isRecording;
         this.soundIsSet = this.soundContainer[1].isSet;
