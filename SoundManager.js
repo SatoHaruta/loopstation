@@ -1,7 +1,8 @@
 //SoundManagerの役割は、二つのサウンドファイル（soundContainer）を管理できる関数を生成すること。後期では、エフェクトの管理もここでやりたい
 
 class SoundManager {
-    startTime;
+    timer;
+    //mainファイルの録音時間
     duration;
     preFinishRecordTime = 300;
     //トラックの中の一つの音声について、録音済みか否かを表す変数
@@ -25,6 +26,7 @@ class SoundManager {
         this.soundContainer = [new RecordAndPlay(mic), new RecordAndPlay(mic)];
         this.soundManagerState = "defined";
         this.defineStateTypes();
+        this.timer = new Timer();
     }
 
     //ここでsoundManagerの状態の種類を作っている
@@ -116,12 +118,12 @@ class SoundManager {
 
     //始まった瞬間の時間を設定する
     setStartTime() {
-        this.startTime = millis();
+        this.timer.start();
     }
 
     //終わった時点で録音した時間を計測する
     setDuration() {
-        this.duration = millis() - this.startTime;//ここでdurationを定義する
+        this.duration = this.timer.getElapsedTime();//ここでdurationを定義する
         console.log(this.duration);
     }
 
