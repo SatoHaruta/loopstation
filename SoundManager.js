@@ -30,9 +30,12 @@ class SoundManager {
     //ここでsoundManagerの状態の種類を作っている
     defineStateTypes(){
         this.stateTypes.add("defined");
+        this.stateTypes.add("subAndMainRecord");
         this.stateTypes.add("subAndMainRecording");
         this.stateTypes.add("MainRecording");
         this.stateTypes.add("recorded");
+        this.stateTypes.add("subPlay");
+        this.stateTypes.add("mainPlay");
         this.stateTypes.add("subPlaying");
         this.stateTypes.add("mainPlaying");
         this.stateTypes.add("stopped");
@@ -42,9 +45,7 @@ class SoundManager {
     soundUpdate() {
         this.soundFinishPreRecord();
         this.checkState();
-        if(this.soundManagerState == "stopped" && this.soundManagerState != "waiting"){
-            this.soundManagerState = "waiting"
-        }
+        this.updateState();
     }
 
     //録音を開始する
@@ -54,7 +55,7 @@ class SoundManager {
         }
         //ここで録音開始した時間を取得
         this.setStartTime();
-        this.soundManagerState = "subAndMainRecording";
+        this.soundManagerState = "subAndMainRecord";
     }
 
     //プレの録音を終了する
@@ -81,7 +82,7 @@ class SoundManager {
     soundSubPlay() {
         //再生する
         this.soundContainer[0].playRecord();
-        this.soundManagerState = "subPlaying";
+        this.soundManagerState = "subPlay";
     }
 
     //サブの音源を停止する
@@ -94,7 +95,7 @@ class SoundManager {
     soundMainPlay() {
         //再生する
         this.soundContainer[1].playRecord();
-        this.soundManagerState = "mainPlaying";
+        this.soundManagerState = "mainPlay";
     }
 
     //メインの音源を停止する
@@ -122,6 +123,22 @@ class SoundManager {
     setDuration() {
         this.duration = millis() - this.startTime;//ここでdurationを定義する
         console.log(this.duration);
+    }
+
+    //soundManagerStateを更新し続けるメソッド
+    updateState(){
+        if(this.soundManagerState == "subAndMainRecord" && this.soundManagerState !="subAndMainRecording"){
+            this.soundManagerState = "subAndMainRecording";
+        }
+        if(this.soundManagerState == "subPlay" && this.soundManagerState !="subPlaying"){
+            this.soundManagerState = "subPlaying";
+        }
+        if(this.soundManagerState == "mainPlay" && this.soundManagerState !="mainPlaying"){
+            this.soundManagerState = "mainPlaying";
+        }
+        if(this.soundManagerState == "stopped" && this.soundManagerState != "waiting"){
+            this.soundManagerState = "waiting"
+        }
     }
 
     //soundContainerのmainの値をsoundManagerに引き継ぐ
