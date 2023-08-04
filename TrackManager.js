@@ -17,9 +17,9 @@ class TrackManager {
             this.soundManager[i].soundUpdate();
             this.trackStartRecord(i);
             this.trackFinishRecord(i);
+            this.trackSubStartPlay(i);
+            this.trackSubStopPlay(i);
 
-            
-            
             //ここから下はisPlaying = true→falseになってしまって同じフレームに再生と停止をしてしまうので、else ifを無理やりねじ込んでいる。
             if (this.soundManager[i].soundContainer[1].isPlaying == true) {
                 this.trackMainStopPlay(i);
@@ -31,43 +31,70 @@ class TrackManager {
     }
 
 
+    //録音を開始する
     trackStartRecord(i) {
         //このtrackに割り当てられているkeyConfigのキーが押された瞬間かつ、soundManagerの中にあるsoundContainerの本ファイルがまだ録音していない場合に
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsSet == false) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundManagerState == "defined") {
 
             console.log("Track→Soundへ録音開始");
             this.soundManager[i].soundStartRecord();
         }
     }
 
+    //録音を停止する
     trackFinishRecord(i) {
         //このtrackに割り当てられているkeyConfigのキーが離された瞬間かつ、soundManagerの中にあるsoundContainerの本ファイルがもう録音済みの場合に
-        if (keyConfig[this.buttonNum].getKeyRelease() == true && this.soundManager[i].soundIsSet == false) {
+        if (keyConfig[this.buttonNum].getKeyRelease() == true && this.soundManager[i].soundManagerState == "MainRecording") {
             console.log("Track→Soundへ本ファイルの録音停止");
             this.soundManager[i].soundFinishMainRecord();
             this.soundManager[i].soundContainer[1].isRecording = false;
         }
     }
 
+
+    //サブ音源の再生をする
+    trackSubStartPlay(i) {
+        if (this.soundManager[i].soundManagerState == "recorded") {
+            //再生する
+            console.log("サブ音源の再生開始");
+            this.soundManager[i].soundSubPlay(0);
+        }
+    }
+
+    //サブ音源を停止する
+    trackSubStopPlay(i) {
+        if (this.soundManager[i].soundManagerState == "subPlaying" && this.soundManager[i].subPlayTimeChecker() == true) {
+            //停止する
+            console.log("サブ音源の再生停止");
+            this.soundManager[i].soundSubStop();
+        }
+    }
+
     //メイン音源の再生をする
     trackMainStartPlay(i) {
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsPlaying == false && this.soundManager[i].soundIsSet == true) {
-            //再生する
+        if (this.soundManager[i].soundManagerState == "subComplete") {
             console.log("メイン音源の再生開始");
-            this.soundManager[i].soundMainPlay();
+            this.soundManager[i].soundMainPlay(this.soundManager[i].preFinishRecordTime);
+        }
+        if (keyConfig[this.buttonNum].getKeyPress() == true) {
+            if (this.soundManager[i].soundManagerState == "waiting") {
+                //再生する
+                console.log("メイン音源の再生開始");
+                this.soundManager[i].soundMainPlay(0);
+            }
         }
     }
 
     //メイン音源を停止する
     trackMainStopPlay(i) {
-        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundIsPlaying == true) {
+        if (keyConfig[this.buttonNum].getKeyPress() == true && this.soundManager[i].soundManagerState == "mainPlaying") {
             //停止する
             console.log("メイン音源の再生停止");
             this.soundManager[i].soundMainStop();
         }
     }
 
-    resetDuration(i){
-        
+    resetDuration(i) {
+
     }
 }

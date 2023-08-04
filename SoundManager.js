@@ -4,7 +4,7 @@ class SoundManager {
     timer;
     //mainファイルの録音時間
     duration;
-    preFinishRecordTime = 300;
+    preFinishRecordTime = 800;
     //トラックの中の一つの音声について、録音済みか否かを表す変数
     //soundContainer[1]のmainのisSet=trueになった場合にtrueになる
     soundManagerIsSet = false;
@@ -37,6 +37,7 @@ class SoundManager {
         this.stateTypes.add("MainRecording");
         this.stateTypes.add("recorded");
         this.stateTypes.add("subPlay");
+        this.stateTypes.add("subComplete");
         this.stateTypes.add("mainPlay");
         this.stateTypes.add("subPlaying");
         this.stateTypes.add("mainPlaying");
@@ -63,7 +64,7 @@ class SoundManager {
     //プレの録音を終了する
     soundFinishPreRecord() {
         //録音スタートしてからpreFinishRecordTime秒分経ったら、かつ、プレサウンドコンテナのisSetがfalseのときに
-        if (millis() - this.startTime > this.preFinishRecordTime && this.soundContainer[0].isSet == false) {
+        if (this.timer.getElapsedTime() > this.preFinishRecordTime && this.soundContainer[0].isSet == false) {
             //プレの録音を停止する。
             this.soundContainer[0].finishRecord();
             console.log("プレファイルの録音停止");
@@ -81,22 +82,35 @@ class SoundManager {
     }
 
     //サブの音源を再生する
-    soundSubPlay() {
+    soundSubPlay(cue) {
         //再生する
-        this.soundContainer[0].playRecord();
+        this.soundContainer[0].playRecord(cue);
         this.soundManagerState = "subPlay";
+        //ここで、サブ音源の再生停止時間を測るためにリセットする
+        this.timer.reset();
     }
 
     //サブの音源を停止する
     soundSubStop() {
         //停止する
         this.soundContainer[0].stopPlaying();
+        this.soundManagerState = "subComplete";
+    }
+
+    //サブ音源の再生時間が一定時間を超えたことを示す
+    subPlayTimeChecker(){
+        if(this.timer.getElapsedTime() > this.preFinishRecordTime && this.soundManagerState == "subPlaying"){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //メインの音源を再生する
-    soundMainPlay() {
+    soundMainPlay(cue) {
         //再生する
-        this.soundContainer[1].playRecord();
+        this.soundContainer[1].playRecord(cue);
         this.soundManagerState = "mainPlay";
     }
 

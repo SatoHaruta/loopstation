@@ -14,7 +14,6 @@ function getFirstRecord() {
                     //globalIsSetをtrueにする。
                     globalIsSet = true;
                 }
-
             }
         }
     }
