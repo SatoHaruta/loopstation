@@ -23,7 +23,7 @@ class SoundManager {
         //音声格納用の変数にRecordAndPlayを設定する
         //[0]がセーブ用途のプレファイル。[1]が本ファイル。
         this.soundContainer = [new RecordAndPlay(mic), new RecordAndPlay(mic)];
-        console.log("作られた");
+        this.soundManagerState = "defined";
         this.defineStateTypes();
     }
 
@@ -33,7 +33,8 @@ class SoundManager {
         this.stateTypes.add("subAndMainRecording");
         this.stateTypes.add("MainRecording");
         this.stateTypes.add("recorded");
-        this.stateTypes.add("playing");
+        this.stateTypes.add("subPlaying");
+        this.stateTypes.add("mainPlaying");
         this.stateTypes.add("stopped");
         this.stateTypes.add("waiting");
     }
@@ -41,6 +42,9 @@ class SoundManager {
     soundUpdate() {
         this.soundFinishPreRecord();
         this.checkState();
+        if(this.soundManagerState == "stopped" && this.soundManagerState != "waiting"){
+            this.soundManagerState = "waiting"
+        }
     }
 
     //録音を開始する
@@ -50,6 +54,7 @@ class SoundManager {
         }
         //ここで録音開始した時間を取得
         this.setStartTime();
+        this.soundManagerState = "subAndMainRecording";
     }
 
     //プレの録音を終了する
@@ -58,7 +63,8 @@ class SoundManager {
         if (millis() - this.startTime > this.preFinishRecordTime && this.soundContainer[0].isSet == false) {
             //プレの録音を停止する。
             this.soundContainer[0].finishRecord();
-            console.log("プレファイルの録音停止")
+            console.log("プレファイルの録音停止");
+            this.soundManagerState = "MainRecording";
         }
     }
 
@@ -68,18 +74,43 @@ class SoundManager {
         console.log("本ファイルの録音停止");
         this.setDuration();
         console.log("durationの設定完了");
+        this.soundManagerState = "recorded";
+    }
+
+    //サブの音源を再生する
+    soundSubPlay() {
+        //再生する
+        this.soundContainer[0].playRecord();
+        this.soundManagerState = "subPlaying";
+    }
+
+    //サブの音源を停止する
+    soundSubStop() {
+        //停止する
+        this.soundContainer[0].stopPlaying();
     }
 
     //メインの音源を再生する
     soundMainPlay() {
         //再生する
         this.soundContainer[1].playRecord();
+        this.soundManagerState = "mainPlaying";
     }
 
     //メインの音源を停止する
     soundMainStop() {
         //停止する
         this.soundContainer[1].stopPlaying();
+        this.soundManagerState = "stopped";
+    }
+
+    //停止のメソッド
+    stopPlaying(){
+        //サブの停止命令
+        this.soundSubStop();
+        //メインの停止命令
+        this.soundMainStop();
+        this.soundManagerState = "stopped";
     }
 
     //始まった瞬間の時間を設定する
@@ -98,5 +129,8 @@ class SoundManager {
         this.soundIsPlaying = this.soundContainer[1].isPlaying;
         this.soundIsRecording = this.soundContainer[1].isRecording;
         this.soundIsSet = this.soundContainer[1].isSet;
+        if(this.stateTypes.has(this.soundManagerState) == false){
+            throw new Error('soundManagerStateに、不正な値が設定されています。');
+        }
     }
 }

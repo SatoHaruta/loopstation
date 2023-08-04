@@ -28,7 +28,6 @@ class keySystem {
     //外部からキーが押された瞬間を検知するメソッド
     getKeyPress(){
         if(this.Pkey == false && this.Nkey == true){
-            console.log(this.keyCharacter + "が今おされた");
             return true;
         }
         else{
@@ -39,7 +38,6 @@ class keySystem {
     //外部からキーが離された瞬間を検知するメソッド
     getKeyRelease(){
         if(this.Pkey == true && this.Nkey == false){
-            console.log(this.keyCharacter +"が今離された");
             return true;
         }
         else{

@@ -1,5 +1,5 @@
 //ここを増やすだけでボタンが増えます。
-let keyConfig = ['a','s'];//キーの反応のクラス
+let keyConfig = ['a'];//キーの反応のクラス
 // 録音、停止、再生の状態を表す
 let state = 0;
 let mic;
@@ -23,7 +23,6 @@ function setup() {
 
 
 function draw() {
-    console.log(globalIsSet);
     background(255);
     // keyToRecord();//クラスじゃないのでfor文の中に入れるな!
 
@@ -32,6 +31,7 @@ function draw() {
         trackManager[i].draw();
         keyConfig[i].update();
         button[i].display();
+        console.log(trackManager[i].soundManager[0].soundManagerState);
     }
     if(globalIsSet == false){
         getFirstRecord();
