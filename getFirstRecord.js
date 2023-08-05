@@ -15,23 +15,29 @@ function getFirstRecord() {
             }
         }
     }
-    else if(globalIsSetState == "recordingSet"){
+    else if (globalIsSetState == "recordingSet") {
         globalIsSetState = "alreadySet"
     }
-    else if(globalIsSetState == "alreadySet") {
+    else if (globalIsSetState == "alreadySet") {
         globalIsSetFalseChecker = 0;
         for (let i = 0; i < trackManager.length; i++) {
             //trackの配列分回す
             if (trackManager[i].trackIsSet == true) {
-                globalIsSetFalseChecker ++;
+                globalIsSetFalseChecker++;
             }
         }
-        if(globalIsSetFalseChecker == 0){
+        if (globalIsSetFalseChecker == 0) {
             globalIsSetState = "notSet";
         }
     }
 }
 
-function setGlobalDuration(Duration){
-    globalDuration = Duration;
+function setGlobalDuration() {
+    for (i = 0; i < trackManager.length; i++) {
+        console.log(trackManager[i].soundManager.length);
+        if(trackManager[i].soundManager[0].soundManagerIsSet == true){
+            globalDuration = trackManager[i].soundManager[0].duration;
+            if(developerMode){console.log("globalDuration設定した")};
+        }
+    }
 }

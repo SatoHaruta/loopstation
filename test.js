@@ -1,5 +1,5 @@
 //ここを増やすだけでボタンが増えます。
-let keyConfig = ['a'];//キーの反応のクラス
+let keyConfig = ['a','s'];//キーの反応のクラス
 // 録音、停止、再生の状態を表す
 let state = 0;
 let mic;
@@ -35,8 +35,13 @@ function draw() {
         button[i].display();
         if (developerMode) { console.log(trackManager[i].soundManager[0].soundManagerState); }
     }
+    
+    //ここでduration関係の設定
     getFirstRecord();
-    console.log(globalIsSetState);
+    console.log(globalDuration + " / " + globalIsSetState);
+    if(globalIsSetState == "recordingSet"){
+        setGlobalDuration();
+    }
 }
 
 //マイク起動し、レコーダーに接続する関数
