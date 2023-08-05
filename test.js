@@ -7,6 +7,7 @@ let trackManager = [];
 let button = [];
 //ここをtrueにすると、consoleが見れる
 let developerMode = false;
+let durationManager;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -14,6 +15,7 @@ function setup() {
     mic = new p5.AudioIn();
     // p5.AudioInオブジェクトを作成
     micOn();
+    durationManager = new DurationManager();
     for (let i = 0; i < keyConfig.length; i++) {
         //ここでボタンひとつにつき一つのkeySystemインスタンスを作る
         //ここではkeySystemに一つ目の配列に入っている文字を送る
@@ -35,12 +37,12 @@ function draw() {
         button[i].display();
         if (developerMode) { console.log(trackManager[i].soundManager[0].soundManagerState); }
     }
-    
+
     //ここでduration関係の設定
-    getFirstRecord();
-    console.log(globalDuration + " / " + globalIsSetState);
-    if(globalIsSetState == "recordingSet"){
-        setGlobalDuration();
+    durationManager.getFirstRecord();
+    console.log(durationManager.globalDuration + " / " + durationManager.globalIsSetState);
+    if(durationManager.globalIsSetState == "recordingSet"){
+        durationManager.setGlobalDuration();
     }
 }
 
