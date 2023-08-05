@@ -158,9 +158,9 @@ class SoundManager {
 
     //soundContainerのmainの値をsoundManagerに引き継ぐ
     checkState() {
-        this.soundIsPlaying = this.soundContainer[1].isPlaying;
-        this.soundIsRecording = this.soundContainer[1].isRecording;
-        this.soundIsSet = this.soundContainer[1].isSet;
+        this.soundManagerIsPlaying = this.soundContainer[1].isPlaying;
+        this.soundManagerIsRecording = this.soundContainer[1].isRecording;
+        this.soundManagerIsSet = this.soundContainer[1].isSet;
         if(this.stateTypes.has(this.soundManagerState) == false){
             throw new Error('soundManagerStateに、不正な値が設定されています。');
         }
