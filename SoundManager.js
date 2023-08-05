@@ -67,7 +67,7 @@ class SoundManager {
         if (this.timer.getElapsedTime() > this.preFinishRecordTime && this.soundContainer[0].isSet == false) {
             //プレの録音を停止する。
             this.soundContainer[0].finishRecord();
-            console.log("プレファイルの録音停止");
+            if(developerMode){console.log("プレファイルの録音停止");}
             this.soundManagerState = "MainRecording";
         }
     }
@@ -75,9 +75,9 @@ class SoundManager {
     //メインの録音を終了する
     soundFinishMainRecord() {
         this.soundContainer[1].finishRecord();
-        console.log("本ファイルの録音停止");
+        if(developerMode){console.log("本ファイルの録音停止");}
         this.setDuration();
-        console.log("durationの設定完了");
+        if(developerMode){console.log("durationの設定完了");}
         this.soundManagerState = "recorded";
     }
 
@@ -138,7 +138,6 @@ class SoundManager {
     //終わった時点で録音した時間を計測する
     setDuration() {
         this.duration = this.timer.getElapsedTime();//ここでdurationを定義する
-        console.log(this.duration);
     }
 
     //soundManagerStateを更新し続けるメソッド

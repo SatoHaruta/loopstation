@@ -5,6 +5,8 @@ let state = 0;
 let mic;
 let trackManager = [];
 let button = [];
+//ここをtrueにすると、consoleが見れる
+let developerMode = false;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -31,7 +33,7 @@ function draw() {
         trackManager[i].draw();
         keyConfig[i].update();
         button[i].display();
-        console.log(trackManager[i].soundManager[0].soundManagerState);
+        if(developerMode){console.log(trackManager[i].soundManager[0].soundManagerState);}
     }
     if(globalIsSet == false){
         getFirstRecord();
@@ -43,7 +45,7 @@ function micOn() {
     // オーディオ入力処理を開始
     userStartAudio();
     mic.start();
-    console.log("マイクon");
+    if(developerMode){console.log("マイクon");}
 }
 
 

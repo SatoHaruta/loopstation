@@ -26,7 +26,7 @@ class RecordAndPlay {
         this.recorder.record(this.soundFile);
         this.isPlaying = false;
         this.isRecording = true;//録音中の状態にする
-        console.log("録音開始")
+        if(developerMode){console.log("録音開始")}
     }
 
     //録音を終了する関数
@@ -35,7 +35,7 @@ class RecordAndPlay {
         this.recorder.stop();
         this.isSet = true;
         this.isRecording = false;//録音していない状態にする
-        console.log("録音終了")
+        if(developerMode){console.log("録音終了")}
     }
 
     //録音したものを再生する関数
@@ -46,7 +46,7 @@ class RecordAndPlay {
         //秒数なので0.001を掛けている
         this.soundFile.jump(cue * 0.001);
         this.isPlaying = true;
-        console.log("再生中")
+        if(developerMode){console.log("再生中")}
     }
 
     //再生を停止する関数
@@ -54,7 +54,7 @@ class RecordAndPlay {
         //再生を停止する
         this.soundFile.stop();
         this.isPlaying = false;
-        console.log("再生停止")
+        if(developerMode){console.log("再生停止")}
     }
 
 }
