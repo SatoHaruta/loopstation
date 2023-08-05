@@ -39,11 +39,7 @@ function draw() {
     }
 
     //ここでduration関係の設定
-    durationManager.getFirstRecord();
-    console.log(durationManager.globalDuration + " / " + durationManager.globalIsSetState);
-    if(durationManager.globalIsSetState == "recordingSet"){
-        durationManager.setGlobalDuration();
-    }
+    durationManager.DurationManagerUpdate();
 }
 
 //マイク起動し、レコーダーに接続する関数

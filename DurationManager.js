@@ -1,11 +1,21 @@
 //ここでは、最初の録音のタイミングを取得し、そのdurationを定義している
 class DurationManager{
 
-
+globalCurrentTime = 0;//現在の時間
+globalTimer;
 globalDuration = 0;//再生の基準値
 globalIsSetState = "notSet";//一回でも録音されるとtrueになる。
 globalIsSetFalseChecker = 0;//全てfalseの場合を測定する
 constructor(){
+    this.globalTimer = new Timer();
+}
+
+DurationManagerUpdate(){
+    this.getFirstRecord();
+    console.log(this.globalDuration + " / " + this.globalIsSetState);
+    if(this.globalIsSetState == "recordingSet"){
+        this.setGlobalDuration();
+    }
 }
 
 getFirstRecord() {
