@@ -10,8 +10,6 @@ class TrackManager {
     }
 
     draw() {
-        console.log(this.trackIsSet);
-        console.log(this.soundManager[0].soundManagerIsSet);
         //soundManagerを作る
         //this.generateSoundManager();
         this.checkTrackIsSet();

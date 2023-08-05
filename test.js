@@ -19,7 +19,7 @@ function setup() {
         //ここではkeySystemに一つ目の配列に入っている文字を送る
         keyConfig[i] = new keySystem(keyConfig[i]);
         trackManager[i] = new TrackManager(mic, i);
-        button[i]= new ButtonDisplay(100*(i+1),windowHeight/2, 50, i);
+        button[i] = new ButtonDisplay(100 * (i + 1), windowHeight / 2, 50, i);
     }
 }
 
@@ -33,11 +33,10 @@ function draw() {
         trackManager[i].draw();
         keyConfig[i].update();
         button[i].display();
-        if(developerMode){console.log(trackManager[i].soundManager[0].soundManagerState);}
+        if (developerMode) { console.log(trackManager[i].soundManager[0].soundManagerState); }
     }
-    if(globalIsSet == false){
-        getFirstRecord();
-    }
+    getFirstRecord();
+    console.log(globalIsSetState);
 }
 
 //マイク起動し、レコーダーに接続する関数
@@ -45,7 +44,7 @@ function micOn() {
     // オーディオ入力処理を開始
     userStartAudio();
     mic.start();
-    if(developerMode){console.log("マイクon");}
+    if (developerMode) { console.log("マイクon"); }
 }
 
 
