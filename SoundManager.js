@@ -4,7 +4,7 @@ class SoundManager {
     timer;
     //mainファイルの録音時間
     duration;
-    preFinishRecordTime = 800;
+    preFinishRecordTime =20;
     //トラックの中の一つの音声について、録音済みか否かを表す変数
     //soundContainer[1]のmainのisSet=trueになった場合にtrueになる
     soundManagerIsSet = false;
