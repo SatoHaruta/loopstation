@@ -2,7 +2,7 @@
 class DurationManager{
 
 globalCurrentTime = 0;//現在の時間
-globalTimer;
+globalTimer;//最初に録音されてから、時間を測り続けるタイマー
 globalDuration = 0;//再生の基準値
 globalIsSetState = "notSet";//一回でも録音されるとtrueになる。
 globalIsSetFalseChecker = 0;//全てfalseの場合を測定する
@@ -12,10 +12,24 @@ constructor(){
 
 DurationManagerUpdate(){
     this.getFirstRecord();
-    console.log(this.globalDuration + " / " + this.globalIsSetState);
+    //最初の録音が登録された瞬間に
     if(this.globalIsSetState == "recordingSet"){
         this.setGlobalDuration();
+        //すでにglobalTimerが計測中なら
+        if(this.globalTimer.running == true){
+            //リセットする
+            this.resetGlobalTimer();
+            if(developerMode){console.log("globalTimerリセット")}
+        }
+        //まだglobalTimerが始まっていなかったら
+        if(this.globalTimer.running == false){
+            //スタートする
+            this.startGlobalTimer();
+            if(developerMode){console.log("globalTimerスタート")}
+        }
+
     }
+
 }
 
 getFirstRecord() {
@@ -41,17 +55,30 @@ getFirstRecord() {
         }
         if (this.globalIsSetFalseChecker == 0) {
             this.globalIsSetState = "notSet";
+
         }
     }
 }
 
+//globalDurationを設定する
 setGlobalDuration() {
+    //trackManagerの数だけfor文を回す
     for (let i = 0; i < trackManager.length; i++) {
-        if(trackManager[i].soundManager[0].soundManagerIsSet == true){
+        //各trackManagerのtrackIsSetがtrueだったら
+        if(trackManager[i].trackIsSet == true){
+            //globalDurationを設定する
             this.globalDuration = trackManager[i].soundManager[0].duration;
             if(developerMode){console.log("globalDuration設定した")};
         }
     }
+}
+
+startGlobalTimer(){
+    this.globalTimer.start();
+}
+
+resetGlobalTimer(){
+    this.globalTimer.reset();
 }
 
 }
