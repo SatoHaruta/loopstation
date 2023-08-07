@@ -87,7 +87,6 @@ class DurationManager {
 
     //durationをリセットするメソッド
     resetGlobalDuration() {
-        console.log(this.getOverTimeDifference());
         this.resetGlobalTimer(this.getOverTimeDifference());
     }
 
