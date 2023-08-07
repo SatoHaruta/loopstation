@@ -15,26 +15,31 @@ class DurationManager {
         this.updateGlobalIsSetState();
         this.updateDurationState();
         this.updateTrackIsSetCount();
-        console.log(this.durationState);
+        console.log(this.globalDuration);
         //console.log(this.globalTimer.getElapsedTime());
+        //console.log(this.globalTimer.getElapsedTime());
+
         //最初の録音が登録された瞬間に
         if (this.globalIsSetState == "recordingSet") {
             this.setGlobalDuration();
-            //すでにglobalTimerが計測中なら
-            if (this.globalTimer.running == true) {
-                //リセットする
-                this.resetGlobalTimer(0);
-                if (developerMode) { console.log("globalTimerリセット") }
-            }
-            //まだglobalTimerが始まっていなかったら
-            if (this.globalTimer.running == false) {
-                //スタートする
-                this.startGlobalTimer(0);
-                if (developerMode) { console.log("globalTimerスタート") }
-            }
-
+            this.startAndResetManager();
         }
+    }
 
+    //startとresetの使い分けをmanagementしている
+    startAndResetManager(){
+        //すでにglobalTimerが計測中なら
+        if (this.globalTimer.running == true) {
+            //リセットする
+            this.resetGlobalTimer(0);
+            if (developerMode) { console.log("globalTimerリセット") }
+        }
+        //まだglobalTimerが始まっていなかったら
+        if (this.globalTimer.running == false) {
+            //スタートする
+            this.startGlobalTimer(0);
+            if (developerMode) { console.log("globalTimerスタート") }
+        }
     }
 
     //GlobalIsSetStateの状態を更新する
@@ -59,18 +64,16 @@ class DurationManager {
 
 
     //今幾つのトラックが録音済みかどうかを更新している
-    updateTrackIsSetCount(){
+    updateTrackIsSetCount() {
         //全トラックの中でtrackIsSet = trueの数をtrackIsSetCountに格納する
         this.trackIsSetCount = trackManager.filter(track => track.trackIsSet === true).length;
     }
 
     //globalDurationを設定する（複数トラックですでに録音されている場合は使わないでください）
     setGlobalDuration() {
-        if (this.globalIsSetState == "recordingSet") {
-            //globalDurationにtrackDuration配列の中の最初に0じゃない値を探し代入している
-            this.globalDuration = trackManager.find(track => track.trackDuration != 0).trackDuration;
-            if (developerMode) { console.log("globalDuration設定した") };
-        }
+        //globalDurationにtrackDuration配列の中の最初に0じゃない値を探し代入している
+        this.globalDuration = trackManager.find(track => track.trackDuration != 0).trackDuration;
+        if (developerMode) { console.log("globalDuration設定した") };
     }
 
     //常時globalTimerを監視し、globalDurationを超えた瞬間にStateを切り替える
