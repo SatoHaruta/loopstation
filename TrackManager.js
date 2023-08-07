@@ -25,6 +25,7 @@ class TrackManager {
             this.trackSubStopPlay(i);
             this.trackMainStopPlay(i);
             this.trackMainStartPlay(i);
+            this.resetDurationManager(i);
         }
     }
 
@@ -35,7 +36,6 @@ class TrackManager {
             this.soundManager.push(new SoundManager(this.mic));
         }
     }
-
 
     //録音を開始する
     trackStartRecord(i) {
@@ -56,7 +56,6 @@ class TrackManager {
             this.soundManager[i].soundFinishMainRecord();
         }
     }
-
 
     //サブ音源の再生をする
     trackSubStartPlay(i) {
@@ -80,14 +79,13 @@ class TrackManager {
     trackMainStartPlay(i) {
         //録音後、最初の再生の場合
         if (this.soundManager[i].soundManagerState == "subComplete") {
-            if (developerMode) { console.log("メイン音源の再生開始"); }
+            //サブが終わった時間から再生を始める
             this.soundManager[i].soundMainPlay(this.soundManager[i].preFinishRecordTime);
         }
         //最初以外の再生の場合
         if (keyConfig[this.buttonNum].getKeyPress() == true) {
             if (this.soundManager[i].soundManagerState == "waiting") {
-                //再生する
-                if (developerMode) { console.log("メイン音源の再生開始"); }
+                //0から再生する
                 this.soundManager[i].soundMainPlay(0);
             }
         }
@@ -102,19 +100,29 @@ class TrackManager {
         }
     }
 
-    setTrackDuration(){
+    setTrackDuration() {
         //すでに録音されていたら
-        if(this.trackIsSet == true){
+        if (this.trackIsSet == true) {
             this.trackDuration = this.soundManager[0].duration;
         }
         //まだ録音されていなかったら
-        if(this.trackIsSet == false){
+        if (this.trackIsSet == false) {
             this.trackDuration = 0;
         }
     }
 
-    resetDuration(i) {
+    resetDurationManager(i){
+        if(durationManager.durationState == "durationOver"){
+            this.resetDuration(i);
+        }
+    }
 
+    resetDuration(i) {
+        //再生中の場合
+        if (this.soundManager[i].soundManagerState == "mainPlaying") {
+            this.soundManager[i].soundMainPlay(0);
+            console.log(this.soundManager[i].soundManagerState);
+        }
     }
 
     checkTrackIsSet() {

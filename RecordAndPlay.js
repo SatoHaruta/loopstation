@@ -41,7 +41,7 @@ class RecordAndPlay {
     //録音したものを再生する関数
     playRecord(cue) {
         // 録音したものを再生する
-        this.soundFile.loop();
+        this.soundFile.play();
         //loopの再生位置を変える
         //秒数なので0.001を掛けている
         this.soundFile.jump(cue * 0.001);
