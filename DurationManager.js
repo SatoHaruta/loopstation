@@ -15,30 +15,15 @@ class DurationManager {
         this.updateGlobalIsSetState();
         this.updateDurationState();
         this.updateTrackIsSetCount();
-        console.log(this.globalDuration);
+        //console.log(this.globalIsSetState);
+        //console.log(this.globalDuration);
         //console.log(this.globalTimer.getElapsedTime());
         //console.log(this.globalTimer.getElapsedTime());
 
         //最初の録音が登録された瞬間に
         if (this.globalIsSetState == "recordingSet") {
             this.setGlobalDuration();
-            this.startAndResetManager();
-        }
-    }
-
-    //startとresetの使い分けをmanagementしている
-    startAndResetManager(){
-        //すでにglobalTimerが計測中なら
-        if (this.globalTimer.running == true) {
-            //リセットする
-            this.resetGlobalTimer(0);
-            if (developerMode) { console.log("globalTimerリセット") }
-        }
-        //まだglobalTimerが始まっていなかったら
-        if (this.globalTimer.running == false) {
-            //スタートする
             this.startGlobalTimer(0);
-            if (developerMode) { console.log("globalTimerスタート") }
         }
     }
 
@@ -102,14 +87,11 @@ class DurationManager {
         return this.globalTimer.getElapsedTime() - this.globalDuration;
     }
 
+    //globalTimerをスタートさせる
     startGlobalTimer(startTime) {
         this.globalTimer.start();
         this.globalTimer.setElapsedTime(startTime);
-    }
-
-    resetGlobalTimer(startTime) {
-        this.globalTimer.reset();
-        this.globalTimer.setElapsedTime(startTime);
+        if (developerMode) { console.log("globalTimerスタート") }
     }
 
 }
