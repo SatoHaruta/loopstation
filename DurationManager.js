@@ -16,13 +16,14 @@ class DurationManager {
         this.updateDurationState();
         this.updateTrackIsSetCount();
         //console.log(this.globalIsSetState);
+        //console.log(this.globalTimer.running);
         //console.log(this.globalDuration);
         //console.log(this.globalTimer.getElapsedTime());
 
         //最初の録音が登録された瞬間に
         if (this.globalIsSetState == "recordingSet") {
             this.setGlobalDuration();
-            this.startGlobalTimer(0);
+            this.firstStartManager();
         }
         
         //globalTimerがglobalDurationより大きくなったら
@@ -31,6 +32,7 @@ class DurationManager {
             this.startGlobalTimer(this.getOverTimeDifference());
         }
     }
+
 
     //GlobalIsSetStateの状態を更新する
     updateGlobalIsSetState() {
@@ -59,13 +61,6 @@ class DurationManager {
         this.trackIsSetCount = trackManager.filter(track => track.trackIsSet === true).length;
     }
 
-    //globalDurationを設定する（複数トラックですでに録音されている場合は使わないでください）
-    setGlobalDuration() {
-        //globalDurationにtrackDuration配列の中の最初に0じゃない値を探し代入している
-        this.globalDuration = trackManager.find(track => track.trackDuration != 0).trackDuration;
-        if (developerMode) { console.log("globalDuration設定した") };
-    }
-
     //常時globalTimerを監視し、globalDurationを超えた瞬間にStateを切り替える
     updateDurationState() {
         //globalTimerがglobalDurationの値を超えた時
@@ -75,6 +70,20 @@ class DurationManager {
         else if (this.durationState == "durationOver" && this.getDurationOver() == false) {
             this.durationState = "waiting";
         }
+    }
+
+    //録音後にtimerをスタートさせるときの条件分岐
+    firstStartManager(){
+        //このメソッドは、trackを作ってから、全て消去してまたglobalDurationを設定した時、globalTimerをstart()で初期化できなかったので、作った
+        //もしすでにtimerが動いていたら
+        if(this.globalTimer.running == true){
+            this.resetGlobalTimer(0);
+        }
+        //まだtimerが動いていなかったら
+        if(this.globalTimer.running == false){
+            this.startGlobalTimer(0);
+        }
+        if (developerMode) { console.log("globalTimerスタート") }
     }
 
     //現在の時間がglobalDurationを超えた時のみtrueを返す
@@ -92,11 +101,17 @@ class DurationManager {
         return this.globalTimer.getElapsedTime() - this.globalDuration;
     }
 
+        //globalDurationを設定する（複数トラックですでに録音されている場合は使わないでください）
+        setGlobalDuration() {
+            //globalDurationにtrackDuration配列の中の最初に0じゃない値を探し代入している
+            this.globalDuration = trackManager.find(track => track.trackDuration != 0).trackDuration;
+            if (developerMode) { console.log("globalDuration設定した") };
+        }
+
     //globalTimerをスタートさせる
     startGlobalTimer(startTime) {
         this.globalTimer.start();
         this.globalTimer.setElapsedTime(startTime);
-        if (developerMode) { console.log("globalTimerスタート") }
     }
 
     //globalTimerの経過時間をリセットする
