@@ -3,6 +3,7 @@
 class TrackManager {
     trackIsSet = false;
     soundManager = [];
+    trackDuration = 0;
     constructor(Mic, buttonNum) {
         this.mic = Mic;//マイクを継承
         this.buttonNum = buttonNum;//ここで何番目のボタンかを取得している
@@ -13,6 +14,7 @@ class TrackManager {
         //soundManagerを作る
         //this.generateSoundManager();
         this.checkTrackIsSet();
+        this.setTrackDuration();
         //soundManager分をforで回す
         for (let i = 0; i < this.soundManager.length; i++) {
             //soundUpdateでプレのfinishRecordのタイミングを常時測っている
@@ -97,6 +99,17 @@ class TrackManager {
             //停止する
             if (developerMode) { console.log("メイン音源の再生停止"); }
             this.soundManager[i].soundMainStop();
+        }
+    }
+
+    setTrackDuration(){
+        //すでに録音されていたら
+        if(this.trackIsSet == true){
+            this.trackDuration = this.soundManager[0].duration;
+        }
+        //まだ録音されていなかったら
+        if(this.trackIsSet == false){
+            this.trackDuration = 0;
         }
     }
 
